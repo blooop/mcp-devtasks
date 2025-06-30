@@ -112,3 +112,6 @@ exclude_also = [
   "pass",
   "(_):",
 ]
+
+[tool.uv]
+main = "main:app"

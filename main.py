@@ -1,14 +1,13 @@
+from fastmcp import FastMCP
 import yaml
 import subprocess
-from fastapi import FastAPI
-from fastapi.responses import PlainTextResponse
 from typing import Dict
 
 # Load commands from YAML
 with open("/workspaces/mcp-devtasks/dev_commands.yaml", encoding="utf-8") as f:
     COMMANDS: Dict[str, str] = yaml.safe_load(f)
 
-app = FastAPI(title="Dev MCP Server")
+mcp = FastMCP("Dev MCP Server")
 
 
 def run_shell_command(cmd: str) -> str:
@@ -19,19 +18,40 @@ def run_shell_command(cmd: str) -> str:
         return f"Error: {e}"
 
 
-@app.get("/commands", response_class=PlainTextResponse)
-def list_commands():
+@mcp.tool
+def list_commands() -> str:
+    """
+    List all available dev commands with descriptions for when to use them.
+    """
+    descriptions = {
+        "install": "Install all dependencies required for the project. Use this when setting up the project for the first time or when dependencies change.",
+        "build": "Build the project. Use this after making changes to source code that require compilation or packaging.",
+        "lint": "Lint the codebase. Use this to check for code style and quality issues before committing or pushing changes.",
+        "test": "Run all tests. Use this to verify that your code works as expected and nothing is broken.",
+        "ci": "Run the full CI pipeline. Use this to perform all checks (formatting, linting, tests) as done in continuous integration."
+    }
+    lines = []
+    for cmd in COMMANDS:
+        desc = descriptions.get(cmd, "No description available.")
+        lines.append(f"{cmd}: {desc}")
+    return "\n".join(lines)
+
+
+@mcp.tool
+def list_command_names() -> str:
+    """
+    List just the available command names, one per line.
+    """
     return "\n".join(COMMANDS.keys())
 
 
-@app.get("/run/{command}", response_class=PlainTextResponse)
-def run_command(command: str):
+@mcp.tool
+def run_command(command: str) -> str:
     if command not in COMMANDS:
         return f"Unknown command: {command}"
     output = run_shell_command(COMMANDS[command])
     return output
 
-# For local dev: uvicorn main:app --reload
+
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    mcp.run(transport="http", host="0.0.0.0", port=8000)
