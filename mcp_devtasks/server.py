@@ -12,6 +12,7 @@ DEFAULT_COMMANDS = {
     "test": "test",
     "ci": "ci",
 }
+print("cwd", os.getcwd())
 
 # Load commands from YAML (development version uses mcp_devtasks.yaml)
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), "mcp_devtasks.yaml")
