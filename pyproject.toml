@@ -1,12 +1,14 @@
 [project]
 name = "mcp_devtasks"
-version = "0.2.0"
+version = "0.0.1"
 authors = [{ name = "Austin Gregg-Smith", email = "blooop@gmail.com" }]
-description = "A python package template"
+description = "A development tasks MCP server for automating install, build, lint, test, and CI commands."
 readme = "README.md"
 license = "MIT"
 
-dependencies = []
+dependencies = [
+  "fastmcp"
+]
 
 [project.urls]
 Source = "https://github.com/blooop/mcp_devtasks"
@@ -112,3 +114,6 @@ exclude_also = [
   "pass",
   "(_):",
 ]
+
+[project.scripts]
+mcp-devtasks = "mcp_devtasks.server:main"

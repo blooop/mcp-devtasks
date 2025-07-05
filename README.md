@@ -1,96 +1,96 @@
-# mcp_devtasks
-A template repo for python projects that is set up using [pixi](https://pixi.sh). 
+# mcp_devtasks MCP Server
 
-This has basic setup for
+This project provides basic development tools as an MCP server, designed to be used with Claude Desktop or any Model Context Protocol (MCP) client. It exposes dev tasks (install, build, lint, test, ci) as callable tools.
 
-* pylint
-* ruff
-* black
-* pytest
-* git-lfs
-* basic github actions ci
-* pulling updates from this template
-* codecov
-* pypi upload
-* dependabot
+# UVX Installation and Usage
 
-## Continuous Integration Status
+This project supports [UVX](https://github.com/astral-sh/uv) for fast, isolated Python package execution, following the Model Context Protocol (MCP) server pattern.
 
-[![Ci](https://github.com/blooop/mcp_devtasks/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/blooop/mcp_devtasks/actions/workflows/ci.yml?query=branch%3Amain)
-[![Codecov](https://codecov.io/gh/blooop/mcp_devtasks/branch/main/graph/badge.svg?token=Y212GW1PG6)](https://codecov.io/gh/blooop/mcp_devtasks)
-[![GitHub issues](https://img.shields.io/github/issues/blooop/mcp_devtasks.svg)](https://GitHub.com/blooop/mcp_devtasks/issues/)
-[![GitHub pull-requests merged](https://badgen.net/github/merged-prs/blooop/mcp_devtasks)](https://github.com/blooop/mcp_devtasks/pulls?q=is%3Amerged)
-[![GitHub release](https://img.shields.io/github/release/blooop/mcp_devtasks.svg)](https://GitHub.com/blooop/mcp_devtasks/releases/)
-[![License](https://img.shields.io/github/license/blooop/mcp_devtasks)](https://opensource.org/license/mit/)
-[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)](https://www.python.org/downloads/)
-[![Pixi Badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/prefix-dev/pixi/main/assets/badge/v0.json)](https://pixi.sh)
+## Prerequisites
+- Python 3.10+
+- [uvx](https://github.com/astral-sh/uv) installed (`pip install uv` or see uv docs)
 
-
-# Install
-
-There are two methods of using this project.  
-
-1. Use github to use this project as a template
-2. Clone the project and run, `scripts/update_from_template.sh` and then run the `scripts/rename_project.sh` to rename the project.
-
-If you want to use docker you may want to run the `scripts/setup_host.sh` script.  It will set up docker and nvidia-docker (assuming you are on ubuntu22.04).
-
-If you are using pixi, look at the available tasks in pyproject.toml  If you are new to pixi follow the instructions on the pixi [website](https://prefix.dev/)
-
-# Github setup
-
-There are github workflows for CI, codecov and automated pypi publishing in `ci.yml` and `publish.yml`.
-
-ci.yml uses pixi tasks to set up the environment matrix and run the various CI tasks. To set up codecov on github, you need to get a `CODECOV_TOKEN` and add it to your actions secrets.
-
-publish.yml uses [pypy-auto-publish](https://github.com/marketplace/actions/python-auto-release-pypi-github) to automatically publish to pypi if the package version number changes. You need to add a `PYPI_API_TOKEN` to your github secrets to enable this.     
-
-
-# Usage
-
-There are currently two ways of running code.  The preferred way is to use pixi to manage your environment and dependencies. 
+## Install from PyPI
 
 ```bash
-cd project
-
-$pixi run ci
-pixi run arbitrary_task
+pip install mcp-devtasks
 ```
 
-If you have dependencies or configuration that cannot be managed by pixi, you can use alternative tools:
-
-- [rockerc](https://github.com/blooop/rockerc): A command-line tool for dynamically creating docker containers with access to host resources such as GPU and 
-- [rockervsc](https://github.com/blooop/rockervsc): A Visual Studio Code extension that integrates rockerc functionality into [vscode remote containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
-
-These tools help you create isolated environments with specific dependencies, ensuring consistent setups across different machines.
+## Development Install
 
 ```bash
-cd project_name
-
-rockerc # build and launch container with dependencies set up
-# OR
-rockervsc # build container, launch and attach vscode to that container.
-
-#once you are inside the container you can use the pixi workflows.
-pixi run ci
+git clone https://github.com/blooop/mcp_devtasks.git
+cd mcp_devtasks
+pip install -e .
 ```
 
-## Legacy
+## Running the MCP Server with UVX
 
-If you don't want to install rocker on your system but want to use vscode, you can run the `scripts/launch_vscode.sh` script to build and connect to a docker container. It will install rocker in a venv.  The docker container is dynamically generated using [rocker](https://github.com/osrf/rocker) and [deps rocker](https://github.com/blooop/deps_rocker).  [deps rocker](https://github.com/blooop/deps_rocker) looks at the mcp_devtasks.deps.yaml file to install any required apt, pip or shell scripts and launches a container that vscode attaches to. 
+You can run the MCP server using UVX, which is the recommended approach for integration with tools like Claude Desktop:
 
-## Troubleshooting
+```bash
+uvx mcp-devtasks
+```
 
-The main pixi tasks are related to CI.  Github actions runs the pixi task "ci".  The CI is mostly likely to fail from a lockfile mismatch.  Use `pixi run fix` to fix any lockfile related problems. 
+- This will launch the MCP server as defined in this package.
 
-## vscode tasks
+### Example Claude Desktop Configuration
 
-There are two core tasks.  
+Add to your `claude_desktop_config.json`:
 
-1. set \<cfg\> from active file
+```json
+{
+  "mcpServers": {
+    "devtasks": {
+      "command": "uvx",
+      "args": [
+        "mcp-devtasks"
+      ]
+    }
+  }
+}
+```
 
-    This sets \<cfg\> to the currently opened file in the editor
+## CLI Usage
 
-2. run \<cfg\>
+You can also run the server directly:
 
-    This runs python with the file set in \<cfg\>
+```bash
+python -m main
+```
+
+or, if installed as a script:
+
+```bash
+mcp-devtasks
+```
+
+# Available Dev Tasks
+
+The following dev tasks are exposed as MCP tools:
+
+- **install**: Install all dependencies required for the project.
+- **build**: Build the project.
+- **lint**: Lint the codebase.
+- **test**: Run all tests.
+- **ci**: Run the full CI pipeline.
+
+You can call these tools from your MCP client or Claude Desktop interface.
+
+# Dev Task Configuration (`mcp_devtasks.yaml`)
+
+The dev tasks exposed by this MCP server are configured via a YAML file named `mcp_devtasks.yaml` in the project root. This file maps task names to the shell commands that will be executed when the corresponding MCP tool is called.
+
+## Example `mcp_devtasks.yaml`
+
+```yaml
+# mcp_devtasks.yaml
+# YAML file specifying shell commands for each dev task
+install: "echo Installing dependencies... && pixi update"
+build: "echo Building project... && pixi run build"
+lint: "echo Linting code... && pixi run lint"
+test: "echo Running tests... && pixi run test"
+ci: "echo Running CI checks... && pixi run ci-no-cover"
+```
+
+You can customize this file to add, remove, or change the commands for your development workflow. Each key becomes an MCP tool, and the value is the shell command that will be run.

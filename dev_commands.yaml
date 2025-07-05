@@ -1,0 +1,7 @@
+# dev_commands.yaml
+# YAML file specifying shell commands for each dev task
+install: "echo Installing dependencies... && pixi update"
+build: "echo Building project... && pixi run build"
+lint: "echo Linting code... && pixi run lint"
+test: "echo Running tests... && pixi run test"
+ci: "echo Running CI checks... && pixi run ci-no-cover"
