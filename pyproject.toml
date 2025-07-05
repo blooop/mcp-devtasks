@@ -2,7 +2,7 @@
 name = "mcp_devtasks"
 version = "0.0.1"
 authors = [{ name = "Austin Gregg-Smith", email = "blooop@gmail.com" }]
-description = "A python package template"
+description = "A development tasks MCP server for automating install, build, lint, test, and CI commands."
 readme = "README.md"
 license = "MIT"
 
