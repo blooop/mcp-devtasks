@@ -1186,7 +1186,7 @@ packages:
 - pypi: .
   name: mcp-devtasks
   version: 0.0.1
-  sha256: 6bbe6cc72b81dae31837e55d7ba3d5c2dc7cb486ff9ee078cab6b088e12e2193
+  sha256: ca685b117f5fe57bb66ecefe6e1029f5e7b12f308eadddeaa01aede4ab8716cc
   requires_dist:
   - fastmcp
   - pylint>=3.2.5,<=3.3.7 ; extra == 'test'
