@@ -1,6 +1,6 @@
 {
     "servers": {
-        "devtasks-mcp-server": {
+        "devtasks": {
             "command": "pixi",
             "args": [
                 "run",
