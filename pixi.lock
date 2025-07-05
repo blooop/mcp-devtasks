@@ -1217,10 +1217,11 @@ packages:
   requires_python: '>=3.10'
 - pypi: .
   name: mcp-devtasks
-  version: 0.0.2
-  sha256: 3761b2087c2e3c4431ac9ea4f3fea5e61cb62bc6d970bca739f71a1c22db41fa
+  version: 0.0.3
+  sha256: d171d89e3a6766f215336ca152736fd1197bb6c41cc806920cc7dfbc3a53ce76
   requires_dist:
   - fastmcp
+  - pyyaml
   - pylint>=3.2.5,<=3.3.7 ; extra == 'test'
   - pytest-cov>=4.1,<=6.2.1 ; extra == 'test'
   - pytest>=7.4,<=8.4.1 ; extra == 'test'
