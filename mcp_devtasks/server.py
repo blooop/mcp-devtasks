@@ -64,8 +64,13 @@ def list_command_names() -> str:
     return "\n".join(COMMANDS.keys())
 
 
-@mcp.tool
+@mcp.tool(
+    description="Run a dev command by name. Returns the output of the command. Use this to execute project tasks such as build, test, lint, etc."
+)
 def run_command(command: str) -> str:
+    """
+    Run a dev command by name. Returns the output of the command. Use this to execute project tasks such as build, test, lint, etc.
+    """
     if command not in COMMANDS:
         return f"Unknown command: {command}"
     output = run_shell_command(COMMANDS[command])
@@ -73,4 +78,4 @@ def run_command(command: str) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    mcp.run()
