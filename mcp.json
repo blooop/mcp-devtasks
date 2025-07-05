@@ -1,53 +1,17 @@
 {
   "name": "devtasks-mcp-server",
-  "description": "MCP server for basic development commands (install, build, lint, test, ci)",
-  "server_url": "http://localhost:8000",
-  "commands": [
-    {
-      "name": "install",
-      "description": "Install all dependencies required for the project. Use this when setting up the project for the first time or when dependencies change.",
-      "endpoint": "run_command",
-      "args": {"command": "install"},
-      "method": "MCP"
-    },
-    {
-      "name": "build",
-      "description": "Build the project. Use this after making changes to source code that require compilation or packaging.",
-      "endpoint": "run_command",
-      "args": {"command": "build"},
-      "method": "MCP"
-    },
-    {
-      "name": "lint",
-      "description": "Lint the codebase. Use this to check for code style and quality issues before committing or pushing changes.",
-      "endpoint": "run_command",
-      "args": {"command": "lint"},
-      "method": "MCP"
-    },
-    {
-      "name": "test",
-      "description": "Run all tests. Use this to verify that your code works as expected and nothing is broken.",
-      "endpoint": "run_command",
-      "args": {"command": "test"},
-      "method": "MCP"
-    },
-    {
-      "name": "ci",
-      "description": "Run the full CI pipeline. Use this to perform all checks (formatting, linting, tests) as done in continuous integration.",
-      "endpoint": "run_command",
-      "args": {"command": "ci"},
-      "method": "MCP"
-    }
-  ],
+  "description": "MCP server for basic development commands (install, build, lint, test, ci) - Development Version",
+  "server_url": "stdio://mcp-devtasks",
   "mcpServers": {
     "devtasks-mcp-server": {
-      "command": "uv",
+      "command": "pixi",
       "args": [
-        "--directory",
-        "/workspaces/mcp-devtasks",
         "run",
-        "main.py"
-      ]
+        "python",
+        "-m",
+        "mcp_devtasks.server"
+      ],
+      "cwd": "/workspaces/mcp-devtasks"
     }
   }
 }

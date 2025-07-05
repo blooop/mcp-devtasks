@@ -115,5 +115,8 @@ exclude_also = [
   "(_):",
 ]
 
+[project.scripts]
+mcp-devtasks = "mcp_devtasks.server:main"
+
 [tool.uv]
 main = "main:mcp"
