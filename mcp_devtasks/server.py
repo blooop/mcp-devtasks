@@ -73,8 +73,7 @@ def run_command(command: str) -> str:
     """
     if command not in COMMANDS:
         return f"Unknown command: {command}"
-    output = run_shell_command(COMMANDS[command])
-    return output
+    return run_shell_command(COMMANDS[command])
 
 
 if __name__ == "__main__":
