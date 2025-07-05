@@ -12,7 +12,9 @@ mcp = FastMCP("Dev MCP Server")
 
 def run_shell_command(cmd: str) -> str:
     try:
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=120, check=False)
+        result = subprocess.run(
+            cmd, shell=True, capture_output=True, text=True, timeout=120, check=False
+        )
         return result.stdout + ("\n" + result.stderr if result.stderr else "")
     except Exception as e:
         return f"Error: {e}"
@@ -28,7 +30,7 @@ def list_commands() -> str:
         "build": "Build the project. Use this after making changes to source code that require compilation or packaging.",
         "lint": "Lint the codebase. Use this to check for code style and quality issues before committing or pushing changes.",
         "test": "Run all tests. Use this to verify that your code works as expected and nothing is broken.",
-        "ci": "Run the full CI pipeline. Use this to perform all checks (formatting, linting, tests) as done in continuous integration."
+        "ci": "Run the full CI pipeline. Use this to perform all checks (formatting, linting, tests) as done in continuous integration.",
     }
     lines = []
     for cmd in COMMANDS:
