@@ -1,0 +1,8 @@
+# mcp_devtasks.yaml
+# Use this file to configure dev tasks for the development version of this MCP server.
+# This file should be in the project root and will be used by the MCP server in development mode.
+install: "echo Installing dependencies... && pixi update"
+build: "echo Building project... && pixi run build"
+lint: "echo Linting code... && pixi run lint"
+test: "echo Running tests... && pixi run test"
+ci: "echo Running CI checks... && pixi run ci-no-cover"

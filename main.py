@@ -2,9 +2,14 @@ from fastmcp import FastMCP
 import yaml
 import subprocess
 from typing import Dict
+import os
 
-# Load commands from YAML
-with open("/workspaces/mcp-devtasks/dev_commands.yaml", encoding="utf-8") as f:
+# Load commands from YAML (development version uses mcp_devtasks.yaml)
+CONFIG_FILE = os.path.join(os.path.dirname(__file__), "mcp_devtasks.yaml")
+if not os.path.exists(CONFIG_FILE):
+    CONFIG_FILE = "/workspaces/mcp-devtasks/mcp_devtasks.yaml"
+
+with open(CONFIG_FILE, encoding="utf-8") as f:
     COMMANDS: Dict[str, str] = yaml.safe_load(f)
 
 mcp = FastMCP("Dev MCP Server")

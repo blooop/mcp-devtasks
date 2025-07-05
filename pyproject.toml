@@ -6,7 +6,9 @@ description = "A python package template"
 readme = "README.md"
 license = "MIT"
 
-dependencies = []
+dependencies = [
+  "fastmcp"
+]
 
 [project.urls]
 Source = "https://github.com/blooop/mcp_devtasks"
@@ -114,4 +116,4 @@ exclude_also = [
 ]
 
 [tool.uv]
-main = "main:app"
+main = "main:mcp"
