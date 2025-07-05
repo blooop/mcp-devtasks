@@ -3,7 +3,7 @@ import yaml
 import subprocess
 from typing import Dict
 import os
-import sys
+import logging
 
 # Default commands if YAML config is missing
 DEFAULT_COMMANDS = {
@@ -15,8 +15,25 @@ DEFAULT_COMMANDS = {
 }
 
 
-def log(msg):
-    print(f"[devtasks][LOG] {msg}", file=sys.stderr)
+logging.basicConfig(
+    level=logging.INFO,
+    format='[devtasks][%(levelname)s] %(asctime)s %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+logger = logging.getLogger("devtasks")
+
+
+def log(msg, level="info"):
+    if level == "info":
+        logger.info(msg)
+    elif level == "error":
+        logger.error(msg)
+    elif level == "warning":
+        logger.warning(msg)
+    elif level == "debug":
+        logger.debug(msg)
+    else:
+        logger.info(msg)
 
 
 log(f"cwd: {os.getcwd()}")
@@ -35,7 +52,7 @@ for path in CONFIG_LOCATIONS:
         log(f"Found config file: {CONFIG_FILE}")
         break
 if not CONFIG_FILE:
-    log("No config file found, using DEFAULT_COMMANDS")
+    log("No config file found, using DEFAULT_COMMANDS", level="warning")
 
 try:
     if CONFIG_FILE:
@@ -46,7 +63,7 @@ try:
         COMMANDS: Dict[str, str] = DEFAULT_COMMANDS.copy()
         log(f"Using default commands: {COMMANDS}")
 except Exception as e:
-    log(f"Error loading config file: {e}")
+    log(f"Error loading config file: {e}", level="error")
     COMMANDS: Dict[str, str] = DEFAULT_COMMANDS.copy()
 
 mcp = FastMCP("Devtasks MCP Server")
@@ -63,7 +80,7 @@ def run_shell_command(cmd: str) -> str:
         log(f"Command returncode: {result.returncode}")
         return result.stdout + ("\n" + result.stderr if result.stderr else "")
     except Exception as e:
-        log(f"Exception running command: {e}")
+        log(f"Exception running command: {e}", level="error")
         return f"Error: {e}"
 
 
