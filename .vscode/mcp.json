@@ -1,0 +1,15 @@
+{
+    "servers": {
+
+        "devtasks-mcp-server": {
+            "command": "pixi",
+            "args": [
+                "run",
+                "python",
+                "-m",
+                "mcp_devtasks.server"
+            ],
+            "cwd": "/workspaces/mcp-devtasks"
+        }
+    }
+}
