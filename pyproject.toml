@@ -1,6 +1,6 @@
 [project]
 name = "mcp_devtasks"
-version = "0.0.2"
+version = "0.0.3"
 authors = [{ name = "Austin Gregg-Smith", email = "blooop@gmail.com" }]
 description = "A development tasks MCP server for automating install, build, lint, test, and CI commands."
 readme = "README.md"

@@ -1185,8 +1185,8 @@ packages:
   requires_python: '>=3.10'
 - pypi: .
   name: mcp-devtasks
-  version: 0.0.2
-  sha256: 4a1d383d9c3fd3ef02d2eee8f6c5b563163a7b862510247872555d8c22cfee57
+  version: 0.0.3
+  sha256: d171d89e3a6766f215336ca152736fd1197bb6c41cc806920cc7dfbc3a53ce76
   requires_dist:
   - fastmcp
   - pyyaml
