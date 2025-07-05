@@ -4,13 +4,25 @@ import subprocess
 from typing import Dict
 import os
 
+# Default commands if YAML config is missing
+DEFAULT_COMMANDS = {
+    "install": "install",
+    "build": "build",
+    "lint": "lint",
+    "test": "test",
+    "ci": "ci",
+}
+
 # Load commands from YAML (development version uses mcp_devtasks.yaml)
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), "mcp_devtasks.yaml")
 if not os.path.exists(CONFIG_FILE):
     CONFIG_FILE = "/workspaces/mcp-devtasks/mcp_devtasks.yaml"
 
-with open(CONFIG_FILE, encoding="utf-8") as f:
-    COMMANDS: Dict[str, str] = yaml.safe_load(f)
+if os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE, encoding="utf-8") as f:
+        COMMANDS: Dict[str, str] = yaml.safe_load(f)
+else:
+    COMMANDS: Dict[str, str] = DEFAULT_COMMANDS.copy()
 
 mcp = FastMCP("Dev MCP Server")
 
