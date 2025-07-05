@@ -3,6 +3,7 @@ import yaml
 import subprocess
 from typing import Dict
 import os
+import sys
 
 # Default commands if YAML config is missing
 DEFAULT_COMMANDS = {
@@ -12,29 +13,57 @@ DEFAULT_COMMANDS = {
     "test": "test",
     "ci": "ci",
 }
-print("cwd", os.getcwd())
 
-# Load commands from YAML (development version uses mcp_devtasks.yaml)
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), "mcp_devtasks.yaml")
-if not os.path.exists(CONFIG_FILE):
-    CONFIG_FILE = "/workspaces/mcp-devtasks/mcp_devtasks.yaml"
 
-if os.path.exists(CONFIG_FILE):
-    with open(CONFIG_FILE, encoding="utf-8") as f:
-        COMMANDS: Dict[str, str] = yaml.safe_load(f)
-else:
+def log(msg):
+    print(f"[devtasks][LOG] {msg}", file=sys.stderr)
+
+
+log(f"cwd: {os.getcwd()}")
+log(f"__file__: {__file__}")
+
+# Robust config file search
+CONFIG_LOCATIONS = [
+    os.path.join(os.getcwd(), "mcp_devtasks.yaml"),
+    os.path.join(os.path.dirname(__file__), "mcp_devtasks.yaml"),
+]
+CONFIG_FILE = None
+for path in CONFIG_LOCATIONS:
+    log(f"Checking config path: {path}")
+    if os.path.exists(path):
+        CONFIG_FILE = path
+        log(f"Found config file: {CONFIG_FILE}")
+        break
+if not CONFIG_FILE:
+    log("No config file found, using DEFAULT_COMMANDS")
+
+try:
+    if CONFIG_FILE:
+        with open(CONFIG_FILE, encoding="utf-8") as f:
+            COMMANDS: Dict[str, str] = yaml.safe_load(f)
+            log(f"Loaded commands from {CONFIG_FILE}: {COMMANDS}")
+    else:
+        COMMANDS: Dict[str, str] = DEFAULT_COMMANDS.copy()
+        log(f"Using default commands: {COMMANDS}")
+except Exception as e:
+    log(f"Error loading config file: {e}")
     COMMANDS: Dict[str, str] = DEFAULT_COMMANDS.copy()
 
-mcp = FastMCP("Dev MCP Server")
+mcp = FastMCP("Devtasks MCP Server")
 
 
 def run_shell_command(cmd: str) -> str:
+    log(f"Running shell command: {cmd}")
     try:
         result = subprocess.run(
             cmd, shell=True, capture_output=True, text=True, timeout=120, check=False
         )
+        log(f"Command stdout: {result.stdout}")
+        log(f"Command stderr: {result.stderr}")
+        log(f"Command returncode: {result.returncode}")
         return result.stdout + ("\n" + result.stderr if result.stderr else "")
     except Exception as e:
+        log(f"Exception running command: {e}")
         return f"Error: {e}"
 
 
