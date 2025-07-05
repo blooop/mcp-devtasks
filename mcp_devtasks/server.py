@@ -17,8 +17,8 @@ DEFAULT_COMMANDS = {
 
 logging.basicConfig(
     level=logging.INFO,
-    format='[devtasks][%(levelname)s] %(asctime)s %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
+    format="[devtasks][%(levelname)s] %(asctime)s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger("devtasks")
 
