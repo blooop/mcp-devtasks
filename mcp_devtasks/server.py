@@ -123,7 +123,7 @@ def run_command(command: str) -> str:
     return run_shell_command(COMMANDS[command])
 
 
-def main():
+def main() -> None:
     """Entry point for CLI usage."""
     mcp.run()
 
