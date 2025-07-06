@@ -123,5 +123,9 @@ def run_command(command: str) -> str:
     return run_shell_command(COMMANDS[command])
 
 
-if __name__ == "__main__":
+def main():
+    """Entry point for CLI usage."""
     mcp.run()
+
+if __name__ == "__main__":
+    main()
