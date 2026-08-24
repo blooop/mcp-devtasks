@@ -1,5 +1,4 @@
 {
-    "name": "mcp_devtasks",
     "build": {
         "dockerfile": "Dockerfile",
         "context": "..",
@@ -27,5 +26,8 @@
     "mounts": [
         "source=${localWorkspaceFolderBasename}-pixi,target=${containerWorkspaceFolder}/.pixi,type=volume"
     ],
-    "postCreateCommand": "sudo chown vscode .pixi && pixi install"
+    "postCreateCommand": "sudo chown vscode .pixi && pixi install",
+    // "name" lives at the end on purpose: it is the only line this repo
+    // changes, and next to the build block every template merge conflicts.
+    "name": "mcp_devtasks"
 }
