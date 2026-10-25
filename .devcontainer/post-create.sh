@@ -45,6 +45,12 @@ fi
 # dependencies, run `pixi install` (or `pixi add`) yourself and commit the lock.
 pixi install --frozen
 
+# The old image put uv and uvx on PATH, and the README runs `uvx mcp-devtasks`.
+# uv now comes from the locked pixi environment, so link it into ~/.local/bin,
+# which the image's shell startup files put on PATH.
+mkdir -p ~/.local/bin
+ln -sf "$PWD/.pixi/envs/default/bin/uv" "$PWD/.pixi/envs/default/bin/uvx" ~/.local/bin/
+
 # 4. Optional tasks. A descendant that does not define one simply skips it --
 # hardcoding `pixi run prek-install` here fails container creation outright with
 # exit 127 on every repo that lacks the task, which is most of them. This list is
